@@ -4,6 +4,7 @@ import{Contact} from './Contact'
 import { ContactService } from './contact.service';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -13,23 +14,32 @@ import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 export class AppComponent implements OnInit{
   title = 'contactmanagerapp';
   public contacts : Contact[];
+  public filteredContacts: Contact[];
   nbContacts: number;
   searchIcon = faSearch;
   selectedContact : Contact;
   closeResult = '';
+  search: string = '';
 
   constructor(private contactService : ContactService,public modalService: NgbModal){}
 
   public getContacts(): void{
     this.contactService.getContacts().subscribe(response=>{
       this.contacts = response;
+      this.filteredContacts = response;
       this.nbContacts = this.contacts.length;
-      console.table(this.contacts);
+      // console.table(this.contacts);
     });
   }
 
   ngOnInit(): void {
       this.getContacts();
+  }
+
+  searchContact(): void{
+    
+    this.filteredContacts = this.contacts.filter(c => c.name.toLowerCase().includes(this.search.toLowerCase()) 
+    ||  c.surname.toLowerCase().includes(this.search.toLowerCase()));
   }
 
   invContacts(): void{

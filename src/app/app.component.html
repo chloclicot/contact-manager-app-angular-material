@@ -16,7 +16,7 @@
   </div>
   <div class="row">
     <div class="col input-group rounded px-0">
-      <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+      <input (change)="searchContact()" [(ngModel)]="search"  type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
       <span class="input-group-text border-0" id="search-addon">
         <fa-icon [icon]=searchIcon></fa-icon>
       </span>
@@ -36,7 +36,7 @@
   </div>
   <div class="row row-height px-0" style="max-height: 480px;">
     <div class="col left border-right px-0 mt-3 scrollbar" >
-      <div *ngFor="let c of contacts">
+      <div *ngFor="let c of filteredContacts">
         <div class="col" (click)="selectContact(c)">
           <div class="card">
             <div class="card-content">
