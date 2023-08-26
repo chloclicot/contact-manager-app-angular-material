@@ -1,32 +1,79 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
+import { NgForm, NgModel } from '@angular/forms';
+import{Contact} from './Contact'
+import { ContactService } from './contact.service';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
-  template: `
-    <!--The content below is only a placeholder and can be replaced.-->
-    <div style="text-align:center" class="content">
-      <h1>
-        Welcome to {{title}}!
-      </h1>
-      <span style="display: block">{{ title }} app is running!</span>
-      <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-    </div>
-    <h2>Here are some links to help you start: </h2>
-    <ul>
-      <li>
-        <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-      </li>
-      <li>
-        <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-      </li>
-      <li>
-        <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-      </li>
-    </ul>
-    
-  `,
-  styles: []
+  templateUrl: './app.component.html',
+  styleUrls: []
 })
-export class AppComponent {
-  title = 'contact-manager-app';
+export class AppComponent implements OnInit{
+  title = 'contactmanagerapp';
+  public contacts : Contact[];
+  nbContacts: number;
+  searchIcon = faSearch;
+  selectedContact : Contact;
+  closeResult = '';
+
+  constructor(private contactService : ContactService,public modalService: NgbModal){}
+
+  public getContacts(): void{
+    this.contactService.getContacts().subscribe(response=>{
+      this.contacts = response;
+      this.nbContacts = this.contacts.length;
+      console.table(this.contacts);
+    });
+  }
+
+  ngOnInit(): void {
+      this.getContacts();
+  }
+
+  invContacts(): void{
+    this.contacts.reverse();
+  }
+
+  selectContact(contact: Contact) {
+    this.selectedContact = contact;
+  }
+
+  onAddContact(form : NgForm): void{
+    this.contactService.addContact(form.value).subscribe(res =>{
+      this.getContacts();
+    });
+  }
+
+  onUpdateContact(form: NgForm, id : number){
+    console.log(form.value);
+    this.contactService.updateContact(form.value,id).subscribe(res =>{
+      this.getContacts();
+      this.contactService.findContactbyId(id).subscribe(res =>{
+        this.selectedContact = res;
+      })
+    })
+  }
+
+  openModal(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      switch (result) {
+        case 'Delete click':
+          this.contactService.deleteContact(this.selectedContact.id).subscribe(res =>
+            {
+              this.getContacts();
+              this.selectedContact = null;
+            })
+          break;
+        default:
+          break;
+      };
+
+
+    }, 
+    );
+  }
+
 }
