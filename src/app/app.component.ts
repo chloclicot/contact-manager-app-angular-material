@@ -20,6 +20,7 @@ export class AppComponent implements OnInit{
   selectedContact : Contact;
   closeResult = '';
   search: string = '';
+  tri: string = 'A-Z';
 
   constructor(private contactService : ContactService,public modalService: NgbModal){}
 
@@ -37,13 +38,18 @@ export class AppComponent implements OnInit{
   }
 
   searchContact(): void{
-    
     this.filteredContacts = this.contacts.filter(c => c.name.toLowerCase().includes(this.search.toLowerCase()) 
     ||  c.surname.toLowerCase().includes(this.search.toLowerCase()));
   }
 
   invContacts(): void{
     this.contacts.reverse();
+    this.tri = 'Z-A';
+  }
+
+  trierContacts(): void{
+    this.getContacts();
+    this.tri = 'A-Z';
   }
 
   selectContact(contact: Contact) {

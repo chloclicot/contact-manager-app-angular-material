@@ -24,11 +24,11 @@
   </div>
   <div class="row align-items-center">
     <div class="col pt-4 d-flex">
-      <p>A-Z</p>
+      <p>{{tri}}</p>
       <div class="dropdown">
         <a class="btn btn-link text-muted text-decoration-none py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bx bx-dots-horizontal-rounded"></i> Trier par</a>
         <ul class="dropdown-menu dropdown-menu-end">
-            <li><a (click)="getContacts()" class="dropdown-item" href="#">A-Z</a></li>
+            <li><a (click)="trierContacts()" class="dropdown-item" href="#">A-Z</a></li>
             <li><a (click)="invContacts()"class="dropdown-item" href="#">Z-A</a></li>
         </ul>
       </div>
