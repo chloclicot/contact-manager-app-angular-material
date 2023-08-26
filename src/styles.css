@@ -7,3 +7,7 @@
 .row-height{
     height: 100vh;
 }
+
+.scrollbar::-webkit-scrollbar {
+    display: none;
+  }
