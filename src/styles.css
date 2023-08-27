@@ -1,4 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 .left{
     height: 100%;
     overflow-y: scroll;
@@ -11,3 +13,26 @@
 .scrollbar::-webkit-scrollbar {
     display: none;
   }
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.grid-container {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+
+
+.form-field{
+  width: 400px;
+  height: 100px;
+}

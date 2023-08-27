@@ -1,0 +1,73 @@
+<div *ngIf="data.mode=='add' " style="width: 400px; padding: 20px;">
+    <h1 mat-dialog-title>Add Contact</h1>
+    <hr>
+    <form #addForm="ngForm" (ngSubmit)="addContact(addForm,'add')" ngNativeValidate>
+        <mat-form-field appearance="outline" class="form-field">
+            <label for="name">Name</label>
+            <input matInput type="text" ngModel name="name" class="form-control" required>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" class="form-field">
+            <label for="surname">Surname</label>
+            <input matInput type="text" ngModel name="surname" class="form-control">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" class="form-field">
+            <label for="tel">Tel</label>
+            <input matInput type="tel" ngModel name="tel" class="form-control">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" class="form-field">
+            <label for="email">Email</label>
+            <input matInput type="email" ngModel name="email" class="form-control">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" class="form-field">
+            <label for="birthday">Date de naissance</label>
+            <input matInput type="date" ngModel name="birthday" class="form-control">
+        </mat-form-field>
+        <br>
+        <div class="center"><button type="submit"  mat-raised-button color="primary" color="primary">Save</button></div>
+    </form>
+</div>
+
+<div *ngIf="data.mode=='edit'" style="width: 400px; padding: 20px;">
+    <h1 mat-dialog-title>Edit Contact</h1>
+    <hr>
+    <form #addForm="ngForm" (ngSubmit)="addContact(addForm,'edit')" ngNativeValidate>
+        <mat-form-field appearance="outline" class="form-field">
+            <label for="name">Name</label>
+            <input matInput type="text" [(ngModel)]="data.selectedContact.name" name="name" class="form-control" required>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" class="form-field">
+            <label for="surname">Surname</label>
+            <input matInput type="text" [(ngModel)]="data.selectedContact.surname" name="surname" class="form-control">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" class="form-field">
+            <label for="tel">Tel</label>
+            <input matInput type="tel" [(ngModel)]="data.selectedContact.tel" name="tel" class="form-control">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" class="form-field">
+            <label for="email">Email</label>
+            <input matInput type="email" [(ngModel)]="data.selectedContact.email" name="email" class="form-control">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" class="form-field">
+            <label for="birthday">Date de naissance</label>
+            <input matInput type="date" ngModel [(ngModel)]="data.selectedContact.birthday" name="birthday" class="form-control">
+        </mat-form-field>
+        <br>
+        <div class="center"><button class type="submit"  mat-raised-button color="primary" color="primary">Save</button></div>
+    </form>
+</div>
+
+<div *ngIf="data.mode=='warn'" style="padding: 20px;">
+    <p mat-dialog-content>Voulez vous supprimer ce contact? </p>
+    <div class="center">
+        <button (click)="dialogRef.close()" mat-raised-button color="basic" style="margin-right: 4px;">Retour</button>
+        <button (click)="dialogRef.close('delete')" mat-raised-button color="warn" style="margin-left: 4px;">Confirmer</button>
+      </div>
+</div>
