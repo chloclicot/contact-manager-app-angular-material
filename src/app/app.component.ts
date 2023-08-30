@@ -1,5 +1,4 @@
 import { Component,OnInit} from '@angular/core';
-import { NgForm} from '@angular/forms';
 import{Contact} from './Contact'
 import { ContactService } from './contact.service';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -22,6 +21,7 @@ export class AppComponent implements OnInit{
   closeResult = '';
   search: string = '';
   tri: string = 'A-Z';
+  displayDate = '';
 
   constructor(private contactService : ContactService,public dialog: MatDialog){}
 
@@ -30,7 +30,7 @@ export class AppComponent implements OnInit{
       this.contacts = response;
       this.filteredContacts = response;
       this.nbContacts = this.contacts.length;
-      // console.table(this.contacts);
+      console.table(this.contacts);
     });
   }
 
@@ -46,25 +46,21 @@ export class AppComponent implements OnInit{
 
   selectContact(contact: Contact) {
     this.selectedContact = contact;
+    var date = new Date(this.selectedContact.birthday);
+    this.displayDate = date.toLocaleString('default',{day:'2-digit'})+" "
+    +date.toLocaleString('default', { month: 'long' })
+    +" ("+this.selectedContact.age+") ans";
   }
 
-
-  onUpdateContact(form: NgForm, id : number){
-    console.log(form.value);
-    this.contactService.updateContact(form.value,id).subscribe(res =>{
-      this.getContacts();
-      this.contactService.findContactbyId(id).subscribe(res =>{
-        this.selectedContact = res;
-      })
-    })
-  }
 
   openDialog(mode:string): void {
     switch (mode) {
       case 'add':
         this.dialog.open(addEditDialog,{data:{mode:'add'}}).afterClosed().subscribe(res=>{
           if(res!=undefined){
-            console.log(res);
+            console.table(res);
+            console.log(res.age);
+            
           this.contactService.addContact(res).subscribe(res=>
             {this.getContacts();}
           )
@@ -76,7 +72,7 @@ export class AppComponent implements OnInit{
         this.dialog.open(addEditDialog,{data:{mode:mode,selectedContact:this.selectedContact}}).afterClosed().subscribe(res=>{
           console.log(res);
           
-          this.contactService.updateContact(res,this.selectedContact.id).subscribe(res=>{
+          this.contactService.updateContact(res).subscribe(res=>{
             this.getContacts();
             this.contactService.findContactbyId(this.selectedContact.id).subscribe(res =>{
               this.selectedContact = res;
@@ -112,33 +108,10 @@ export class AppComponent implements OnInit{
         this.tri = 'A-Z';
       }
     
-    // this.dialog.open(addEditDialog);
   
   }
 
-  // openModal(){
-  //   this.dialog.open()
-  // }
-
-  // openModal(content) {
-  //   this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-  //     this.closeResult = `Closed with: ${result}`;
-  //     switch (result) {
-  //       case 'Delete click':
-  //         this.contactService.deleteContact(this.selectedContact.id).subscribe(res =>
-  //           {
-  //             this.getContacts();
-  //             this.selectedContact = null;
-  //           })
-  //         break;
-  //       default:
-  //         break;
-  //     };
-
-
-  //   }, 
-  //   );
-  // }
+ 
   
 
 }

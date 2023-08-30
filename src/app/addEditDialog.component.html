@@ -60,6 +60,10 @@
             <input matInput type="date" ngModel [(ngModel)]="data.selectedContact.birthday" name="birthday" class="form-control">
         </mat-form-field>
         <br>
+        <mat-form-field appearance="outline" class="form-field" style="display: none;">
+            <label for="id"></label>
+            <input matInput type="text" [(ngModel)]="data.selectedContact.id" name="id" class="form-control" required>
+        </mat-form-field>
         <div class="center"><button class type="submit"  mat-raised-button color="primary" color="primary">Save</button></div>
     </form>
 </div>
